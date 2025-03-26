@@ -1,7 +1,6 @@
 streamlit
 folium
 streamlit-folium
-sqlite3
 requests
 webbrowser
 math
