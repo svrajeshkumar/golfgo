@@ -1,7 +1,8 @@
-python==3.9.13
+streamlit
 folium
+streamlit-folium
+python==3.9.13
 sqlite3
 requests
 webbrowser
 math
-streamlit_folium
