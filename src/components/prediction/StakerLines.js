@@ -180,8 +180,11 @@ const StakerLines = () => {
 
   useEffect(() => {
     if (dataGetHolesDetails?.data?.length > 0) {
+      const storedUser = localStorage.getItem("user_info");
+    const user =storedUser ?JSON.parse(storedUser):null;
+    const userId= user?._id;
       const payload = {
-        userId: "67c5ddca8ff83dcedee8e388",
+        userId:userId,
         golfCourseCoordinates: {
           latitude: parseFloat(latitude),
           longitude: parseFloat(longitude),

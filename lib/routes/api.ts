@@ -2,6 +2,7 @@ export const API_ROUTES = {
   ADMIN_LOGIN: "/admin/login",
   USER_SIGNUP: "/user/save",
   USER_LOGIN: "/user/login",
+  UPDATE_USER:"/user/update-user",
   FETCH_GOLF_COURSES: "/golf/fetch-course-locations",
   FETCH_GOLF_COURSES_BY_PLACE_ID: "/golf/fetch",
   FETCH_WEATHER: "/golf/fetch-weather-data",

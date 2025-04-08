@@ -38,6 +38,28 @@ export const userApi = createApi({
         };
       },
     }),
+    updateUser:builder.mutation<
+    any,
+    {
+      userId:string;
+      golfProfile: {
+        playerType: {
+          type: string;
+          characteristics: string;
+        };
+        tournamentPrep: boolean;
+        ballFlight: string;
+        playStyle: string;
+        dexterity: string;
+      };
+    }
+ >({
+    query: ({userId,golfProfile}) =>({
+      url:`${API_ROUTES.UPDATE_USER}/${userId}`,
+      method:"POST",
+      body:golfProfile,
+    })
+ })
   }),
 });
-export const { useRegisterNewUserMutation, useLogInUserMutation } = userApi;
+export const { useRegisterNewUserMutation, useLogInUserMutation, useUpdateUserMutation } = userApi;
