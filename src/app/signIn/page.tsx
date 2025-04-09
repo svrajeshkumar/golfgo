@@ -14,7 +14,7 @@ const StyledSignUpContainer = styled(Box)(({ theme }) => ({
 const SignUpPage = () => {
   return (
     <StyledSignUpContainer>
-      <SignupContainer onSubmit={()=>{}} />;
+      <SignupContainer />;
     </StyledSignUpContainer>
   );
 };

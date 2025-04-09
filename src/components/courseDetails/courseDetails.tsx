@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLazyGetGolfCourseByPlaceIdApiQuery } from "../../../lib/redux/golfCourseApi/golfCourseApi";
 
-const CourseDetails = () => {
+const CourseDetailsComponent = () => {
   const router = useRouter();
   const searchParam = useSearchParams();
   const placeId = searchParam.get("place_id");
@@ -115,6 +115,14 @@ const CourseDetails = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CourseDetails = () => {
+  return (
+    <Suspense>
+      <CourseDetailsComponent />
+    </Suspense>
   );
 };
 

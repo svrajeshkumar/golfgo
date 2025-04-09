@@ -6,9 +6,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 const predictionPage = () => {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <StakerLines/>
-    </DndProvider>
+    <React.Suspense>
+      <DndProvider backend={HTML5Backend}>
+        <StakerLines />
+      </DndProvider>
+    </React.Suspense>
   );
 };
 

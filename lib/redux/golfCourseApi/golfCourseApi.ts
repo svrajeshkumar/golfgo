@@ -46,7 +46,7 @@ export const golfCourseApi = createApi({
       },
     }),
     getWeatherApi: builder.query<GetWeatherResponseType, GetWeatherParams>({
-      query: ({ coordinates }) => {
+      query: () => {
         return {
           url: API_ROUTES.FETCH_WEATHER,
           method: "POST",

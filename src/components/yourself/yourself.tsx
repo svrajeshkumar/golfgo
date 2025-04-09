@@ -3,7 +3,6 @@ import { Box, Typography, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import SwipeableViews from "react-swipeable-views";
 import { useUpdateUserMutation } from "../../../lib/redux/userApi/userApi";
-import { json } from "stream/consumers";
 
 const options = [
   {
@@ -56,7 +55,7 @@ const GolfSelection: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [index, setIndex] = useState(0);
   const router = useRouter();
-  const [updateUser, { isLoading, isError, error }] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 2500);
     return () => clearTimeout(timer);

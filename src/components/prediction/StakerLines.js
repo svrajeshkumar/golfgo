@@ -41,6 +41,9 @@ const StakerLines = () => {
   const [confirmedStart, setConfirmedStart] = useState(false);
   const [showShotPopup, setShowShotPopup] = useState(false);
   const [showTeeShotForm, setShowTeeShotForm] = useState(false);
+  const [showApproachShotPopup, setShowApproachShotPopup] = useState(false); // New state for Approach Shot confirmation
+  const [showApproachShotForm, setShowApproachShotForm] = useState(false); // New state for Approach Shot form
+
   const searchParam = useSearchParams();
   const latitude = Number(searchParam.get("latitude"));
   const longitude = Number(searchParam.get("longitude"));
@@ -106,6 +109,17 @@ const StakerLines = () => {
   };
   const handleShotNo = () => {
     setShowShotPopup(false);
+  };
+  // New handler for Approach Shot confirmation
+  const handleApproachShotYes = () => {
+    setShowApproachShotPopup(false);
+    setTimeout(() => {
+      setShowApproachShotForm(true);
+    }, 100);
+  };
+
+  const handleApproachShotNo = () => {
+    setShowApproachShotPopup(false);
   };
 
   // Calculate distance between two points
@@ -181,10 +195,10 @@ const StakerLines = () => {
   useEffect(() => {
     if (dataGetHolesDetails?.data?.length > 0) {
       const storedUser = localStorage.getItem("user_info");
-    const user =storedUser ?JSON.parse(storedUser):null;
-    const userId= user?._id;
+      const user = storedUser ? JSON.parse(storedUser) : null;
+      const userId = user?._id;
       const payload = {
-        userId:userId,
+        userId: userId,
         golfCourseCoordinates: {
           latitude: parseFloat(latitude),
           longitude: parseFloat(longitude),
@@ -245,12 +259,53 @@ const StakerLines = () => {
       .then((response) => {
         alert(response?.data.message);
         setShowTeeShotForm(false);
+        if (payload.shotType === "TEE4") {
+          setShowApproachShotPopup(true);
+        }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  const onApproachSubmit = (data) => {
+    const payload = {
+      shotType: "APPROACH",
+      image: {
+        filename: "approach.jpg",
+        fileKey: "/images/approach.jpg",
+      },
+      clubType: data?.clubType,
+      distance: Number(data?.distance) || 0,
+      proximity: 10, // Example value
+      notes: data?.notes,
+      coordinates: {
+        latitude: latitude,
+        longitude: longitude,
+      },
+      startPointCoordinates: {
+        x: points[1].x, // Start from end of previous shot
+        y: points[1].y,
+      },
+      endPointCoordinates: {
+        x: points[2].x,
+        y: points[2].y,
+      },
+      estimatedDistance: 50, // Example
+      placeId: placeId,
+    };
 
+    saveGolfSessionShot({
+      sessionId: dataSaveGolfSession?.data?._id,
+      payload,
+    })
+      .then((response) => {
+        alert(response?.data?.message);
+        setShowApproachShotForm(false);
+      })
+      .catch((error) => {
+        console.error("Error saving approach shot:", error);
+      });
+  };
   return (
     <StyledStakerLinesContainer
       ref={divRef}
@@ -556,6 +611,70 @@ const StakerLines = () => {
           </button>
         </div>
       )}
+
+      {showApproachShotPopup && (
+        <div className="absolute bottom-30 left-1/2 transform -translate-x-1/2 w-[70%] max-w-lg bg-black text-white p-4 rounded-lg shadow-lg text-center">
+          <p>Are you ready for the Approach Shot?</p>
+          <div className="flex justify-center gap-4 mt-2">
+            <button
+              className="bg-green-500 px-4 py-2 rounded"
+              onClick={handleApproachShotYes}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-red-500 px-4 py-2 rounded"
+              onClick={() => {
+                setPoints(points.slice(0, 1)); // Keep only first point.
+                setShowApproachShotPopup(false);
+              }}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showApproachShotForm && (
+        <div className="absolute bottom-22 left-1/2 transform -translate-x-1/2 w-[70%] max-w-lg bg-black text-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-lg font-semibold">Approach Shot Details</h2>
+          <p className="text-sm text-gray-400">
+            Tap on the fields to change the value
+          </p>
+
+          <input
+            {...register("distance")}
+            type="text"
+            placeholder="Distance (yds)"
+            className="w-full bg-gray-800 text-white p-2 rounded mt-3"
+          />
+          <input
+            {...register("clubType")}
+            type="text"
+            placeholder="Club Used"
+            className="w-full bg-gray-800 text-white p-2 rounded mt-3"
+          />
+          <input
+            {...register("wind")}
+            type="text"
+            placeholder="Wind (MPH)"
+            className="w-full bg-gray-800 text-white p-2 rounded mt-3"
+          />
+          <textarea
+            {...register("notes")}
+            placeholder="Adjustment Notes"
+            className="w-full bg-gray-800 text-white p-2 rounded mt-3 h-20"
+          ></textarea>
+
+          <button
+            disabled={isLoadingSaveGolfSessionShot}
+            className="w-full bg-blue-600 text-white py-2 rounded mt-4"
+            onClick={handleSubmit(onApproachSubmit)}
+          >
+            Submit
+          </button>
+        </div>
+      )}
       {/* Club Selection */}
       <div className="absolute bottom-5 right-5 bg-black text-white rounded-2xl p-2 shadow-lg border border-purple-500">
         <p className="text-left text-lg">Select Holes </p>
@@ -572,7 +691,6 @@ const StakerLines = () => {
             <option value={2}>hole 3</option>
             <option value={3}>hole 4</option>
             <option value={4}>hole 5</option>
-
           </select>
         </div>
       </div>
