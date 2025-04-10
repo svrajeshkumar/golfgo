@@ -80,7 +80,7 @@ function GolfCourseList() {
           <div
             key={index}
             className="bg-gray-900 rounded-xl overflow-hidden cursor-pointer"
-            onClick={() => router.push(`/CourseDetails?latitude=${course?.latitude}&longitude=${course?.longitude}&club_name=${course.club_name}&place_id=${course.place_id}`)}
+            onClick={() => router.push(`/CourseDetails?latitude=${course?.latitude}&longitude=${course?.longitude}&club_name=${course.club_name}&place_id=${course.place_id}`)}  
           >
             <img
               src={course?.image || "/images/golfcourse1.png"}

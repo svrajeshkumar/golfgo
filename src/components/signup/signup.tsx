@@ -133,7 +133,7 @@ const LoginForm: React.FC = () => {
             className="w-full flex justify-center py-4 px-4 border border-black 
              rounded-lg shadow-sm text-sm font-medium text-white 
              bg-black hover:bg-gray-900 focus:outline-none 
-             focus:ring-2 focus:ring-offset-2 focus:ring-black"
+             focus:ring-2 focus:ring-offset-2 focus:ring-black  mt-4"
             onClick={() => router.push("/registerForm")}
           >
             No account? Register Here.

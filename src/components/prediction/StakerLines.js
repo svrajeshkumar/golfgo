@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { Stage, Layer, Circle, Line, Text } from "react-konva";
-import { Box, styled, Grid2 } from "@mui/material";
+import { Box, styled, Grid2, Button } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import {
   useLazyGetHolesDetailsQuery,
@@ -10,6 +10,7 @@ import {
   useSaveGolfSessionShotMutation,
 } from "../../../lib/redux/golfCourseApi/golfCourseApi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { FcIdea } from "react-icons/fc";
 import { predictedDistance } from "../../../utils/calculations";
 import { useForm } from "react-hook-form";
 
@@ -89,12 +90,12 @@ const StakerLines = () => {
       {
         x: 170.0,
         y: 450.0,
-        id: Date.now(),
+        id: Date.now() + "p2",
       },
       {
         x: 200.0,
         y: 70.0,
-        id: Date.now(),
+        id: Date.now() + "p3",
       },
     ]);
     setShowConfirmPopup(false);
@@ -102,9 +103,7 @@ const StakerLines = () => {
   };
   const handleShotYes = () => {
     setShowShotPopup(false);
-    setTimeout(() => {
-      setShowTeeShotForm(true);
-    }, 100);
+    setShowTeeShotForm(true);
     // Add logic for what happens after confirming the shot
   };
   const handleShotNo = () => {
@@ -113,9 +112,10 @@ const StakerLines = () => {
   // New handler for Approach Shot confirmation
   const handleApproachShotYes = () => {
     setShowApproachShotPopup(false);
-    setTimeout(() => {
-      setShowApproachShotForm(true);
-    }, 100);
+    //setPoints(points.slice(0, 1));
+    // setTimeout(() => {
+    //   setShowApproachShotForm(true);
+    // }, 5000);
   };
 
   const handleApproachShotNo = () => {
@@ -156,7 +156,7 @@ const StakerLines = () => {
           {
             x: pointerPosition.x,
             y: pointerPosition.y,
-            id: Date.now(),
+            id: Date.now() + "P1",
           },
         ]);
       }
@@ -259,9 +259,6 @@ const StakerLines = () => {
       .then((response) => {
         alert(response?.data.message);
         setShowTeeShotForm(false);
-        if (payload.shotType === "TEE4") {
-          setShowApproachShotPopup(true);
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -306,6 +303,7 @@ const StakerLines = () => {
         console.error("Error saving approach shot:", error);
       });
   };
+
   return (
     <StyledStakerLinesContainer
       ref={divRef}
@@ -322,9 +320,10 @@ const StakerLines = () => {
                 onClick={() => {
                   setShowInfoPopup(!showInfoPopup);
                 }}
-                className="flex flex-col items-center justify-center  bg-white border border-gray-400  top-5 right-5 w-[30px] h-[30px]  z-60 rounded-full"
+                className="flex flex-col items-center justify-center  bg-white border border-gray-400  top-5 right-5 w-[40px] h-[40px]  z-60 rounded-full"
               >
-                <IoIosArrowDown size={20} />
+                {/* <IoIosArrowDown size={20} /> */}
+                <FcIdea size={30} />
               </div>
             </Grid2>
           </Grid2>
@@ -399,14 +398,11 @@ const StakerLines = () => {
                     </span>
                   </p>
                 </div>
-                {/* {dataAiPrediction?.data?.map((item) => (
-                  <div className="px-3">
-                    <h1 className="text-2xl pb-1">{item?.heading}</h1>
-                    <p>{item?.content}</p>
-                  </div>
-                ))} */}
                 {dataAiPrediction?.data?.map((item, index) => (
-                  <div key={index} className="px-3">
+                  <div
+                    key={index}
+                    className="px-3 bg-[#007AFF] text-white mt-2 p-4 rounded-lg"
+                  >
                     <h1 className="text-2xl pb-1">{item?.heading}</h1>
                     <p
                       dangerouslySetInnerHTML={{
@@ -417,17 +413,17 @@ const StakerLines = () => {
                     />
                   </div>
                 ))}
-
-                <div className="absolute bottom-[-20px] right-0.5">
-                  <div
-                    className="bg-black"
-                    onClick={() => {
-                      setShowInfoPopup(!showInfoPopup);
-                    }}
-                  >
-                    <IoIosArrowUp size={20} />
-                  </div>
-                </div>
+                <button
+                  className="w-3/4 mx-auto flex justify-center py-3 mt-2 border border-black 
+                  rounded-lg shadow-sm text-2xl font-medium text-white 
+                  bg-[#34C759] hover:bg-gray-900 focus:outline-none 
+                  focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                  onClick={() => {
+                    setShowInfoPopup(!showInfoPopup);
+                  }}
+                >
+                  Ok
+                </button>
               </div>
             </Grid2>
           </Grid2>
@@ -586,6 +582,7 @@ const StakerLines = () => {
           />
           <input
             {...register("clubType")}
+            defaultValue={"DRIVER"}
             type="text"
             placeholder="Club Used"
             className="w-full bg-gray-800 text-white p-2 rounded mt-3"

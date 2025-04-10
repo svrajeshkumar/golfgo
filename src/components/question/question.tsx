@@ -1,12 +1,7 @@
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-} from "@mui/material";
-import SwipeableViews from "react-swipeable-views";
+import { Box, Typography, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useUpdateUserMutation } from "../../../lib/redux/userApi/userApi";
 
 const questions = [
   {
@@ -16,17 +11,7 @@ const questions = [
       { value: "right", label: "Right handed" },
       { value: "left", label: "Left handed" },
     ],
-    background: "/images/question.png",
   },
-  // {
-  //   key: "ballFlight",
-  //   question: "What is your stock ball flight?",
-  //   options: [
-  //     { value: "draw", label: "Draw" },
-  //     { value: "fade", label: "Fade" },
-  //   ],
-  //   background: "/images/question.png",
-  // },
   {
     key: "tournament",
     question: "Are you preparing for a tournament?",
@@ -34,127 +19,115 @@ const questions = [
       { value: "yes", label: "✅ Yes" },
       { value: "no", label: "❌ No" },
     ],
-    background: "/images/question.png",
   },
-  // {
-  //   key: "playstyle",
-  //   question: "How far do you hit a driver?",
-  //   options: [],
-  //   background: "/images/question.png",
-  // },
 ];
 
 const GolfQuestions = () => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [index, setIndex] = useState(0);
   const router = useRouter();
+  const [updateUser] = useUpdateUserMutation();
 
   const handleAnswer = (key: string, value: string) => {
-    setAnswers({ ...answers, [key]: value });
-    if (index < questions.length - 1) {
-      setIndex(index + 1);
+    setAnswers((prev) => ({ ...prev, [key]: value }));
+  };
+
+
+
+  const handleSubmit = () => {
+    const storedUser = localStorage.getItem("user_info");
+    const golfProfile = JSON.parse(
+      localStorage.getItem("golfProfile") as string
+    );
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const userId = user?._id;
+
+    if (!userId) {
+      console.error("User ID not found in localStorage");
+      return;
     }
+
+    updateUser({
+      userId,
+      golfProfile: {
+        ...golfProfile,
+        tournamentPrep: answers["tournament"] === "yes",
+        dexterity:
+          answers["dexterity"] === "right" ? "RIGHT_HANDED" : "LEFT_HANDED",
+      },
+    }).then(() => {
+      router.push("/GolfCourse");
+    });
   };
 
   return (
-    <SwipeableViews index={index} onChangeIndex={setIndex} enableMouseEvents>
-      {questions.map((q, i) => (
-        <Box
-          key={q.key}
-          sx={{
-            height: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundImage: `url(${q.background})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            color: "white",
-            textAlign: "center",
-            px: 3,
-          }}
-        >
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage: "url(/images/question.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        color: "white",
+        textAlign: "center",
+        px: 3,
+      }}
+    >
+      {questions.map((q) => (
+        <Box key={q.key} sx={{ mb: 4, p: 2 }}>
           <Typography
-            variant="h5"
-            fontWeight="bold"
-            sx={{
-              mb: 3,
-              backgroundColor: "rgba(0,0,0,0.6)",
-              p: 1,
-              borderRadius: 2,
-            }}
+            variant="h6"
+            fontWeight="500"
+            sx={{ mb: 2, backgroundColor: "rgba(0,0,0,0.6)", borderRadius: 2 }}
           >
             {q.question}
           </Typography>
-          {q.options.length > 0 ? (
-            <Box display="flex" gap={2}>
-              {q.options.map((option) => (
-                <Button
-                  key={option.value}
-                  variant="contained"
-                  onClick={() => handleAnswer(q.key, option.value)}
-                  sx={{
-                    backgroundColor: "white",
-                    color: "black",
-                    px: 4,
-                    py: 1.5,
-                    borderRadius: "25px",
-                    fontWeight: 500,
-                    "&:hover": {
-                      backgroundColor: "lightgray",
-                    },
-                  }}
-                >
-                  {option.label}
-                </Button>
-              ))}
-            </Box>
-          ) : (
-            <TextField
-              variant="outlined"
-              placeholder="Enter distance (yards)"
-              value={answers[q.key] || ""}
-              onChange={(e) => handleAnswer(q.key, e.target.value)}
-              sx={{
-                backgroundColor: "white",
-                borderRadius: 2,
-                mt: 2,
-                width: "80%",
-              }}
-            />
-          )}
-          {/* <Box mt={4} display="flex" justifyContent="space-between" width="80%">
-            <Button
-              onClick={() => setIndex(Math.max(index - 1, 0))}
-              disabled={index === 0}
-              sx={{ color: "white", backgroundColor: "rgba(0,0,0,0.6)", px: 4 }}
-            >
-              Previous
-            </Button>
-          </Box> */}
-          {index === questions.length - 1 && (
-            <Box textAlign="center">
+          <Box display="flex" gap={2} justifyContent="center">
+            {q.options.map((option) => (
               <Button
-                variant="contained"
+                key={option.value}
+                variant={
+                  answers[q.key] === option.value ? "contained" : "outlined"
+                }
+                onClick={() => handleAnswer(q.key, option.value)}
                 sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  mt: 20,
-                  px: 15,
+                  px: 2,
                   py: 1.5,
                   borderRadius: "25px",
-                  fontWeight: 500,
+                  fontWeight: 400,
+                  color: answers[q.key] === option.value ? "white" : "black",
+                  backgroundColor:
+                    answers[q.key] === option.value ? "#1976d2" : "white",
+                  "&:hover": {
+                    backgroundColor:
+                      answers[q.key] === option.value ? "#1565c0" : "lightgray",
+                  },
                 }}
-                onClick={() => router.push("/GolfCourse")}
               >
-                Submit
+                {option.label}
               </Button>
-            </Box>
-          )}
+            ))}
+          </Box>
         </Box>
       ))}
-    </SwipeableViews>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: "white",
+          color: "black",
+          mt: 4,
+          px: 15,
+          py: 1.5,
+          borderRadius: "25px",
+          fontWeight: 500,
+        }}
+        onClick={() => handleSubmit()}
+      >
+        Submit
+      </Button>
+    </Box>
   );
 };
 
