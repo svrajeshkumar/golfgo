@@ -14,10 +14,13 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     logInUser({ input, password })
       .then((response) => {
-        if(response?.data?.status==="success" && response?.data?.data?._id){
-          localStorage.setItem('user_info',JSON.stringify(response?.data?.data));
+        if (response?.data?.status === "success" && response?.data?.data?._id) {
+          localStorage.setItem(
+            "user_info",
+            JSON.stringify(response?.data?.data)
+          );
           router.push("/yourself");
-        }else{
+        } else {
           // alert("Something went to wrong please try again...");
         }
         console.log(response);
@@ -25,7 +28,6 @@ const LoginForm: React.FC = () => {
       .catch((error) => {
         // alert("Something went wrong please try again....");
       });
-
   };
 
   return (
@@ -54,7 +56,7 @@ const LoginForm: React.FC = () => {
                 placeholder="Enter email or phone number"
                 onChange={(e) => setInput(e.target.value)}
                 className="mt-1 block w-full px-4 py-4 bg-gray-50 border border-gray-300 rounded-md 
-                         focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                         focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black font-semibold"
                 required
               />
             </div>
@@ -73,7 +75,7 @@ const LoginForm: React.FC = () => {
                 placeholder="Enter Password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full px-4 py-4 bg-gray-50 border border-gray-300 rounded-md 
-                         focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                         focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black font-semibold"
                 required
               />
             </div>

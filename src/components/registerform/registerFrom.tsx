@@ -6,12 +6,9 @@ import * as yup from "yup";
 import {
   Box,
   Button,
-  Checkbox,
   Container,
   Grid,
   IconButton,
-  InputAdornment,
-  TextField,
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -23,14 +20,7 @@ import { parsePhoneNumberWithError } from "libphonenumber-js";
 import { useRegisterNewUserMutation } from "../../../lib/redux/userApi/userApi";
 
 const schema = yup.object().shape({
-  // firstName: yup.string().required("First name is required"),
-  // lastName: yup.string().required("Last name is required"),
-  // gender: yup.string().required("Gender is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  // phoneNumber: yup
-  //   .string()
-  //   .matches(/^\d{10}$/, "Phone number must be 10 digits")
-  //   .required("Phone number is required"),
   password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -39,14 +29,12 @@ const schema = yup.object().shape({
 
 const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [registerNewUser, { isLoading, isError }] =
-    useRegisterNewUserMutation();
+  const [registerNewUser, { isLoading }] = useRegisterNewUserMutation();
   const router = useRouter();
 
   const {
-    register,
-    handleSubmit,
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -61,7 +49,6 @@ const SignUp: React.FC = () => {
     };
     registerNewUser(payload)
       .then((response) => {
-        console.log(response);
         if (response?.error) {
           alert("User Already Exists!!");
         } else {
@@ -69,29 +56,31 @@ const SignUp: React.FC = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         alert(error.message);
-      })
-      .finally(() => {});
+      });
   };
 
   return (
-    <Box>
+    <Box
+      sx={{ backgroundColor: "#000", minHeight: "100vh", color: "#fff", py: 4, }}
+    >
       <Container maxWidth="xs">
-        <Box
-          display="flex"
-          justifyContent="center"
-          mb={2}
-          sx={{ backgroundColor: "black" }}
-        >
+        <Box display="flex" justifyContent="center" mb={2}>
           <img src="/images/logo.png" alt="Golf Player" />
         </Box>
-        <Typography variant="h5" fontWeight="bold" gutterBottom py={5}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          gutterBottom
+          textAlign="center"
+          sx={{marginBottom:5}}
+        >
           Sign Up
         </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} py={5}>
+          <Grid container spacing={5}>
+            <Grid item xs={12}>
               <TextInputFieldComponent
                 control={control}
                 name="email"
@@ -103,10 +92,27 @@ const SignUp: React.FC = () => {
                   placeholder: "Email",
                   size: "medium",
                   type: "text",
+                  InputLabelProps: {
+                    style: { color: "white" },
+                  },
+                  InputProps: {
+                    sx: {
+                      backgroundColor: "#1e1e1e",
+                      borderRadius: "8px",
+                      input: {
+                        color: "#fff",
+                        fontWeight: 600,
+                        "::placeholder": {
+                          color: "black",
+                        },
+                      },
+                    },
+                  },
                 }}
               />
             </Grid>
-            <Grid item xs={12} py={5}>
+
+            <Grid item xs={12}>
               <FormMobileInput
                 name="phoneNumber"
                 size="medium"
@@ -117,9 +123,23 @@ const SignUp: React.FC = () => {
                 control={control}
                 defaultValue=""
                 id="form-phone-input"
+                placeholder="Enter phone number"
+                sx={{
+                  input: {
+                    color: "#fff",
+                    fontWeight: 600,
+                    borderRadius: "8px",
+                    backgroundColor: "#1e1e1e",
+                    "&::placeholder": {
+                      color: "white", 
+                     
+                    },
+                  },
+                }}
               />
             </Grid>
-            <Grid item xs={12} py={5}>
+
+            <Grid item xs={12}>
               <TextInputFieldComponent
                 control={control}
                 name="password"
@@ -131,51 +151,73 @@ const SignUp: React.FC = () => {
                   placeholder: "Password",
                   size: "medium",
                   type: showPassword ? "text" : "password",
+                  InputLabelProps: {
+                    style: { color: "white" },
+                  },
                   InputProps: {
                     endAdornment: (
                       <IconButton
                         onClick={() => setShowPassword(!showPassword)}
                         size="small"
                       >
-                        {showPassword && <Visibility />}
-                        {!showPassword && <VisibilityOff />}
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     ),
+                    sx: {
+                      backgroundColor: "#1e1e1e",
+                      borderRadius: "8px",
+                      input: {
+                        color: "#fff",
+                        fontWeight: 600,
+                        "::placeholder": {
+                          color: "#aaa",
+                        },
+                      },
+                    },
                   },
                 }}
               />
             </Grid>
 
-            <Grid item xs={12} py={3}>
+            <Grid item xs={12}>
               <Button
                 type="submit"
                 variant="contained"
                 fullWidth
                 disabled={isLoading}
                 sx={{
-                  backgroundColor: "black",
-                  color: "white",
+                  backgroundColor: "#34C759",
+                  color: "#000",
+                  fontWeight: "bold",
                   borderRadius: "50px",
                   py: 1.5,
+                  marginTop:5,
+                  "&:hover": {
+                    backgroundColor: "#28a745",
+                  },
                 }}
               >
                 Submit
               </Button>
             </Grid>
-            <Grid item xs={12} py={3}>
+
+            <Grid item xs={12}>
               <Button
-                type="submit"
+                type="button"
                 variant="contained"
                 fullWidth
                 disabled={isLoading}
+                onClick={() => router.push("signIn")}
                 sx={{
-                  backgroundColor: "black",
-                  color: "white",
+                  backgroundColor: "#007AFF",
+                  color: "#fff",
+                  fontWeight: "bold",
                   borderRadius: "50px",
                   py: 1.5,
+                  "&:hover": {
+                    backgroundColor: "#005bb5",
+                  },
                 }}
-                onClick={() => router.push("signIn")}
-
               >
                 Log In
               </Button>
