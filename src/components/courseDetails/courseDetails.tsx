@@ -44,21 +44,24 @@ const CourseDetailsComponent = () => {
         </div>
 
         <div className="flex items-center justify-between pt-5 px-5">
-          <div className="text-center">
-            <p className="text-xs text-gray-400">Length</p>
-            <p className="text-lg font-semibold">1</p>
+        <div className="text-center">
+            <p className="text-xs text-gray-400">Holes</p>
+            <p className="text-lg font-semibold">18</p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-gray-400">Rating/Slope</p>
+            <p className="text-xs text-gray-400">Yardage</p>
+            <p className="text-lg font-semibold">7182</p>
+          </div>
+          <div className="text-center">
+            <p className="text-xs text-gray-400">Slope/Rating</p>
             <p className="text-lg font-semibold">
-              {" "}
-              {data?.data?.course_details?.result?.rating}
+              {/* {" "}
+              {data?.data?.course_details?.result?.rating} */}
+              75.1/146
+
             </p>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-gray-400">Scorecard</p>
-            <p className="text-lg font-semibold">413</p>
-          </div>
+         
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center pt-5">
           {/* <span className="text-red-500 mr-2 bg-amber-50 rounded-3xl px-2">

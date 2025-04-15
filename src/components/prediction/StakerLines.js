@@ -11,6 +11,7 @@ import {
 } from "../../../lib/redux/golfCourseApi/golfCourseApi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { FcIdea } from "react-icons/fc";
+import { FaMicrophone } from "react-icons/fa";
 import { predictedDistance } from "../../../utils/calculations";
 import { useForm } from "react-hook-form";
 
@@ -323,7 +324,8 @@ const StakerLines = () => {
                 className="flex flex-col items-center justify-center  bg-white border border-gray-400  top-5 right-5 w-[40px] h-[40px]  z-60 rounded-full"
               >
                 {/* <IoIosArrowDown size={20} /> */}
-                <FcIdea size={30} />
+                {/* <FcIdea size={30} /> */}
+                <FaMicrophone size={30} />
               </div>
             </Grid2>
           </Grid2>
@@ -673,7 +675,7 @@ const StakerLines = () => {
         </div>
       )}
       {/* Club Selection */}
-      <div className="absolute bottom-5 right-5 bg-black text-white rounded-2xl p-2 shadow-lg border border-purple-500">
+      {/* <div className="absolute bottom-5 right-5 bg-black text-white rounded-2xl p-2 shadow-lg border border-purple-500">
         <p className="text-left text-lg">Select Holes </p>
         <div className="flex mt-2 mb-2">
           <select
@@ -688,6 +690,43 @@ const StakerLines = () => {
             <option value={2}>hole 3</option>
             <option value={3}>hole 4</option>
             <option value={4}>hole 5</option>
+            <option value={5}>hole 6</option>
+            <option value={6}>hole 7</option>
+            <option value={7}>hole 8</option>
+            <option value={8}>hole 9</option>
+          </select>
+        </div>
+      </div> */}
+      <div className="absolute bottom-5 right-5 bg-black text-white rounded-2xl p-2 shadow-lg border border-purple-500">
+        <p className="text-left text-lg">Select Holes</p>
+        <div className="mt-2 mb-2">
+          <select
+            value={holeIndex}
+            onChange={(e) => {
+              setHoleIndex(Number(e.target.value));
+            }}
+            className="bg-gray-800 text-white px-4 py-2 rounded-full max-h-32 overflow-y-auto" // Added max-h and overflow-y
+          >
+            <option value={0}>Hole 1</option>
+            <option value={1}>Hole 2</option>
+            <option value={2}>Hole 3</option>
+            <option value={3}>Hole 4</option>
+            <option value={4}>Hole 5</option>
+            <option value={5}>Hole 6</option>
+            <option value={6}>Hole 7</option>
+            <option value={7}>Hole 8</option>
+            <option value={8}>Hole 9</option>
+            {/* Add more holes if needed */}
+            {/* <option value={9}>hole 10</option>
+      <option value={10}>Hole 11</option>
+      <option value={11}>Hole 12</option>
+      <option value={12}>Hole 13</option>
+      <option value={13}>Hole 14</option>
+      <option value={14}>Hole 15</option>
+      <option value={15}>Hole 16</option>
+      <option value={16}>Hole 17</option>
+      <option value={17}>Hole 18</option>
+       */}
           </select>
         </div>
       </div>

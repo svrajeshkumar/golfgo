@@ -8,7 +8,7 @@ const options = [
     title: "The Tumbler",
     description:
       "Low-ball hitters who are accurate with above-average short game",
-    example: "Example: Viktor Hovland, Matt Fitzpatrick",
+    example: "Example: Sahith Theegala, Collin Morikawa",
     backendValue: {
       type: "TUMBLER",
       characteristics:
@@ -30,7 +30,7 @@ const options = [
     title: "The Floaters",
     description:
       "High ball flight, accurate with irons and below average short game.",
-    example: "Example: Brooks Koepka, Jon Rahm",
+    example: "Example: Rickie Fowler, Jordan Spieth",
     backendValue: {
       type: "FLOATER",
       characteristics:
@@ -41,7 +41,7 @@ const options = [
     title: "The Risers",
     description:
       "Mid ball flight, accurate with irons and above average short game, average with drivers.",
-    example: "Example: Brooks Koepka, Jon Rahm",
+    example: "Example: Akshay Bhatia, Xander Schauffele",
     backendValue: {
       type: "RISER",
       characteristics:
