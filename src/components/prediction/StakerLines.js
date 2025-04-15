@@ -226,6 +226,17 @@ const StakerLines = () => {
       });
     }
   }, [dataSaveGolfSession]);
+  const holeData = [
+    { par: 5, yards: 527 },
+    { par: 4, yards: 467 },
+    { par: 3, yards: 188 },
+    { par: 5, yards: 635 },
+    { par: 4, yards: 435 },
+    { par: 3, yards: 186 },
+    { par: 4, yards: 445 },
+    { par: 3, yards: 136 },
+    { par: 4, yards: 370 },
+  ];
 
   const onSubmit = (data) => {
     const payload = {
@@ -304,7 +315,7 @@ const StakerLines = () => {
         console.error("Error saving approach shot:", error);
       });
   };
-
+  const selectedHole = holeData[holeIndex];
   return (
     <StyledStakerLinesContainer
       ref={divRef}
@@ -315,7 +326,7 @@ const StakerLines = () => {
     >
       {!showInfoPopup && (
         <Box pl={1} pr={1} component="div" className="section-header z-50">
-          <Grid2 container justifyContent="flex-end">
+          <Grid2 container justifyContent="flex-end" spacing={1}>
             <Grid2>
               <div
                 onClick={() => {
@@ -324,7 +335,13 @@ const StakerLines = () => {
                 className="flex flex-col items-center justify-center  bg-white border border-gray-400  top-5 right-5 w-[40px] h-[40px]  z-60 rounded-full"
               >
                 {/* <IoIosArrowDown size={20} /> */}
-                {/* <FcIdea size={30} /> */}
+                <FcIdea size={30} />
+              </div>
+            </Grid2>
+            <Grid2>
+              <div
+                onClick={() => {}}
+                className="flex flex-col items-center justify-center bg-red-500 border border-gray-400 top-5 right-5 w-[40px] h-[40px] z-60 rounded-full"              >
                 <FaMicrophone size={30} />
               </div>
             </Grid2>
@@ -349,12 +366,16 @@ const StakerLines = () => {
                 </div>
                 <div className="text-center">
                   <p className="text-xs text-gray-400">Par</p>
-                  <p className="text-lg font-semibold">4</p>
+                  <p className="text-lg font-semibold">
+                    {selectedHole?.par || 0}
+                  </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-xs text-gray-400">Yds</p>
+                  <p className="text-xs text-gray-400">
+                    Yards
+                  </p>
                   <p className="text-lg font-semibold">
-                    {dataSaveGolfSession?.data?.yards}
+                  {selectedHole?.yards || 0} 
                   </p>
                 </div>
               </div>
@@ -707,26 +728,11 @@ const StakerLines = () => {
             }}
             className="bg-gray-800 text-white px-4 py-2 rounded-full max-h-32 overflow-y-auto" // Added max-h and overflow-y
           >
-            <option value={0}>Hole 1</option>
-            <option value={1}>Hole 2</option>
-            <option value={2}>Hole 3</option>
-            <option value={3}>Hole 4</option>
-            <option value={4}>Hole 5</option>
-            <option value={5}>Hole 6</option>
-            <option value={6}>Hole 7</option>
-            <option value={7}>Hole 8</option>
-            <option value={8}>Hole 9</option>
-            {/* Add more holes if needed */}
-            {/* <option value={9}>hole 10</option>
-      <option value={10}>Hole 11</option>
-      <option value={11}>Hole 12</option>
-      <option value={12}>Hole 13</option>
-      <option value={13}>Hole 14</option>
-      <option value={14}>Hole 15</option>
-      <option value={15}>Hole 16</option>
-      <option value={16}>Hole 17</option>
-      <option value={17}>Hole 18</option>
-       */}
+            {holeData.map((hole, index) => (
+              <option key={index} value={index}>
+                hole {index + 1}
+              </option>
+            ))}
           </select>
         </div>
       </div>
