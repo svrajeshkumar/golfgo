@@ -321,8 +321,9 @@ const StakerLines = () => {
       ref={divRef}
       component="div"
       style={{
-        backgroundSize:"cover",
+        backgroundSize:"contain",
         backgroundPosition:"top center",
+        backgroundColor:"black",
         backgroundImage: `url(${dataGetHolesDetails?.data?.[holeIndex]?.holeMapUrl})`,
       }}
     >
