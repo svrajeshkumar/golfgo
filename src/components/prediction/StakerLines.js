@@ -320,11 +320,21 @@ const StakerLines = () => {
     <StyledStakerLinesContainer
       ref={divRef}
       component="div"
+      // style={{
+      //   backgroundSize:"contain",
+      //   backgroundPosition:"top center",
+      //   backgroundColor:"black",
+      //   backgroundImage: `url(${dataGetHolesDetails?.data?.[holeIndex]?.holeMapUrl})`,
+      // }}
       style={{
-        backgroundSize:"contain",
-        backgroundPosition:"top center",
-        backgroundColor:"black",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "black",
         backgroundImage: `url(${dataGetHolesDetails?.data?.[holeIndex]?.holeMapUrl})`,
+        height: "100vh", // Ensures the full viewport height is used
+        width: "100%",   // Full width of screen
+        overflow: "auto", // Allow scrolling if necessary
       }}
     >
       {!showInfoPopup && (
